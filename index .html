@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body class="" >
+
+<div id="app" class="bg-gray-300 h-screen" >
+
+    <div class="flex flex-wrap gap-3 w-full justify-center pt-5">
+        <label class="w-4/12 flex flex-col">
+            <input id="input" v-on:keypress.enter="InTask()" v-model="Task" class="p-4 h-12 border border-2 border-indigo-500 rounded rounded-lg placeholder-gray-500 outline-none" type="text" placeholder="What are your tasks for today?" />
+
+        </label>
+    </div>
+
+
+    <div v-if="cTask.length != 0" class="flex flex-wrap gap-3 w-full justify-center pt-20">
+        <div class="w-7/12 flex flex-col">
+            <h1 class="text-xl  mb-6 ">Current tasks</h1>
+            <div class="p-4 bg-white flex justify-between mb-6 h-14 items-center border border-3 border-blue-400 rounded rounded-lg shadow-lg shadow" v-for="task in cTask">
+                <p class="p-2 ">{{task}}</p>
+                <div>
+                    <button @click="ToLaterTask(task) "class="px-4 py-2 rounded-md text-sm font-medium  text-blue-600  hover:text-white hover:bg-blue-500 ">Later</button>
+                    <button @click="removeC(task) "class="px-4 py-2 rounded-md text-sm font-medium  text-red-600  hover:text-white hover:bg-red-500 ">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div v-if="lTask.length != 0" class="flex flex-wrap gap-3 w-full justify-center pt-10">
+        <div class="w-7/12 flex flex-col">
+            <h1 class="text-xl  mb-6 ">Later tasks</h1>
+            <div class="p-4 bg-white flex justify-between mb-6 h-14 items-center border border-3 border-green-400 rounded rounded-lg shadow-lg shadow" v-for="task in lTask">
+                <p class="p-2 ">{{task}}</p>
+                <div>
+                    <button @click="ToCurrentTask(task) "class="px-4 py-2 rounded-md text-sm font-medium  text-green-600  hover:text-white hover:bg-green-500 ">Current</button>
+                    <button @click="removeL(task) "class="px-4 py-2 rounded-md text-sm font-medium  text-red-600  hover:text-white hover:bg-red-500 ">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+
+    let app = new Vue({
+        el:'#app',
+        data: {
+
+            Task:'',
+            cTask:[],
+            lTask:[],
+
+
+        },methods: {
+
+            InTask(){
+                this.cTask.push(this.Task)
+                this.Task =""
+            },
+            ToLaterTask(task){
+
+                const index = this.cTask.indexOf(task, 0)
+                this.lTask.push(task)
+                this.cTask.splice(index, 1)
+                console.log(index)
+            },
+            ToCurrentTask(task){
+
+                const index = this.lTask.indexOf(task, 0)
+                this.cTask.push(task)
+                this.lTask.splice(index, 1)
+                console.log(index)
+            },
+            removeC(task){
+                const index = this.cTask.indexOf(task, 0)
+                this.cTask.splice(index, 1)
+            },
+            removeL(task){
+                const index = this.lTask.indexOf(task, 0)
+                this.lTask.splice(index, 1)
+            }
+
+
+        }
+    })
+
+</script>
+</body>
+</html>
